@@ -4,7 +4,7 @@ Title: OutlierAdjustment
 Version: 0.1.0
 Author: Mukesh Sharma
 Maintainer: <mukesh.sharma@allrepsonsemedia.com>
-Description: This package identifies outliers using geom boxplot and then adjusts them using the kNN function from the VIM package.
+Description: This package adjusts outliers using the kNN and provides a plot of the original series against the Imputed.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: FALSE
