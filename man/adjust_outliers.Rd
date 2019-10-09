@@ -12,8 +12,21 @@ adjust_outliers(dataframe, column)
 \item{column}{Column in questions with double quotes}
 }
 \description{
-This function identifies and plots outliers
+This function adjusts outliers using the kNN algorithm
 }
 \examples{
-Example <- get_outlier_plot()
+Example <- adjust_outliers(test,"All_Visits")
+
+The original and imputed series can be compared wiht the below
+
+plot<- Final_Data \%>\% 
+ggplot(aes(x=Date,y=Imputed)) + Where Imputed is the name of the imputed series
+geom_line(col="black") +
+geom_point()
+
+comp_plot<- plot + geom_line(aes(x=Date,y=Original), col = "red") + 
+geom_point() + ggtitle("Original vs Imputed Series") + ylab("Series") Where Imputed is the name of the imputed series
+                  
+ggplotly(comp_plot)
+
 }

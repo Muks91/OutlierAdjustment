@@ -1,6 +1,6 @@
 #' Adjusts outliers based off of geom_boxplot
 #'
-#' This function identifies and plots outliers
+#' This function adjusts outliers using the kNN algorithm
 #' @param dataframe Object of data table or dataframe
 #' @param column Column in questions with double quotes
 #' @export adjust_outliers
