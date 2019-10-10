@@ -1,6 +1,6 @@
 #' Identifies and adjust outliers in data
 #'
-#' This function identifies and plots outliers
+#' This function identifies and plots outliers using geom_boxplot
 #' @param dataframe Object of data table or dataframe
 #' @param column Column in questions with double quotes
 #' @export get_outlier_plot

@@ -7,15 +7,15 @@
 #' @examples
 #' Example <- adjust_outliers(test,"All_Visits")
 #' 
-#' The original and imputed series can be compared wiht the below
+#' The original and imputed series can be compared with the below
 #' 
 #' plot<- Final_Data %>% 
-#' ggplot(aes(x=Date,y=Imputed)) + Where Imputed is the name of the imputed series
+#' ggplot(aes(x=Date,y=Imputed)) + #Where Imputed is the name of the imputed series
 #' geom_line(col="black") +
 #' geom_point()
 #' 
 #' comp_plot<- plot + geom_line(aes(x=Date,y=Original), col = "red") + 
-#' geom_point() + ggtitle("Original vs Imputed Series") + ylab("Series") Where Imputed is the name of the imputed series
+#' geom_point() + ggtitle("Original vs Imputed Series") + ylab("Series") #Where Original is the name of the Original series
 #'                   
 #' ggplotly(comp_plot)
 #' 
