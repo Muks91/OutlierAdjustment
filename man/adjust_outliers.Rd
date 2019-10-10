@@ -9,7 +9,7 @@ adjust_outliers(dataframe, column)
 \arguments{
 \item{dataframe}{Object of data table or dataframe}
 
-\item{column}{Column in questions with double quotes}
+\item{column}{Column in question with double quotes}
 }
 \description{
 This function adjusts outliers using the kNN algorithm

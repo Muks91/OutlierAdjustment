@@ -2,7 +2,7 @@
 #'
 #' This function adjusts outliers using the kNN algorithm
 #' @param dataframe Object of data table or dataframe
-#' @param column Column in questions with double quotes
+#' @param column Column in question with double quotes
 #' @export adjust_outliers
 #' @examples
 #' Example <- adjust_outliers(test,"All_Visits")
