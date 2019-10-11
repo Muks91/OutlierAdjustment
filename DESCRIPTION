@@ -8,5 +8,5 @@ Description: This package adjusts outliers using the kNN and provides a plot of 
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: FALSE
-Depends: data.table,ggplot2,laeken,plotly, tidyverse
+Depends: data.table,ggplot2,laeken,plotly, tidyverse, VIM
 RoxygenNote: 6.1.1
