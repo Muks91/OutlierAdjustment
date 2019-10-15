@@ -15,7 +15,7 @@ adjust_outliers(dataframe, column)
 This function adjusts outliers using the kNN algorithm
 }
 \examples{
-Example <- adjust_outliers(test,"All_Visits")
+Example <- adjust_outliers()
 
 The original and imputed series can be compared with the below
 

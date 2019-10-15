@@ -5,7 +5,7 @@
 #' @param column Column in question with double quotes
 #' @export adjust_outliers
 #' @examples
-#' Example <- adjust_outliers(test,"All_Visits")
+#' Example <- adjust_outliers()
 #' 
 #' The original and imputed series can be compared with the below
 #' 
@@ -39,6 +39,10 @@ adjust_outliers <- function(dataframe,column){
     mutate(dataframe[[column]], Imputed = as.numeric(ifelse(dataframe[[column]]>=Outliers$Values, NA, dataframe[[column]]))) 
   
   k<- sqrt(nrow(dataframe_1))  #determine optimal k
+  
+  dataframe_1 <- dataframe_1 %>% 
+    mutate(dataframe[[column]]==replace(dataframe[[column]], dataframe[[column]]== 0, NA)) 
+
 
   new_data<- data.table(kNN(dataframe_1, variable = "Imputed",k = k, numFun = weightedMean, weightDist=TRUE, trace = FALSE))#perform knn Imputation
   new_data<- data.table(round(new_data$Imputed,digits=0))
