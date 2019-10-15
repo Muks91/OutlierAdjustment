@@ -33,8 +33,7 @@ adjust_outliers <- function(dataframe,column){
   Outliers<- as.data.table(stats$outliers)
   names(Outliers)[1]<- "Values"
   
-  dataframe <- dataframe %>% 
-    mutate(dataframe[[column]]==replace(dataframe[[column]], dataframe[[column]]== 0, NA)) %>% 
+  dataframe[dataframe == 0] <- NA
   
   dataframe_1<- dataframe %>%
     mutate(dataframe[[column]], Imputed = as.numeric(ifelse(dataframe[[column]]>=Outliers$Values, NA, dataframe[[column]]))) 
