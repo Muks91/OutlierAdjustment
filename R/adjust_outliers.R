@@ -43,7 +43,6 @@ adjust_outliers <- function(dataframe,column){
   dataframe_1 <- dataframe_1 %>% 
     mutate(dataframe[[column]]==replace(dataframe[[column]], dataframe[[column]]== 0, NA)) 
 
-
   new_data<- data.table(kNN(dataframe_1, variable = "Imputed",k = k, numFun = weightedMean, weightDist=TRUE, trace = FALSE))#perform knn Imputation
   new_data<- data.table(round(new_data$Imputed,digits=0))
   names(new_data)[1]<- paste0(column,"" ,"_Imputed")
