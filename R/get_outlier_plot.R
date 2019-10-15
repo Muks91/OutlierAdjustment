@@ -5,7 +5,7 @@
 #' @param column Column in questions with double quotes
 #' @export get_outlier_plot
 #' @examples
-#' Example <- get_outlier_plot()
+#' Example <- get_outlier_plot(data,"X")
 get_outlier_plot <- function(dataframe,column){
 
   geombox<- dataframe %>%
