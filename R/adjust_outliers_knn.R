@@ -5,7 +5,7 @@
 #' @param column Column in question with double quotes
 #' @export adjust_outliers
 #' @examples
-#' Example <- adjust_outliers()
+#' Example <- adjust_outliers_knn()
 #' 
 #' The original and imputed series can be compared with the below
 #' 
@@ -36,11 +36,6 @@ adjust_outliers_knn <- function(dataframe,column){
   
   Outliers <- tibble::rowid_to_column(Outliers, "ID")
   
-  # 
-  #dataframe[dataframe == 0] <- NA
-  
-  #dataframe <- tibble::rowid_to_column(dataframe, "ID")
-  
   Outliers<- dataframe[dataframe[[column]] %in% Outliers$Values,]
   
   Outliers<- mutate(d,Seq = c(0, diff(d$ID) > 1))
@@ -64,12 +59,9 @@ for (i in 1:nrow(dataframe_knn)){
     
     if(any(is.na(dataframe_knn$Imputed))){
       
-      ##########
-      
       dataframe_knn<- data.table(dataframe_knn)
       
       k<- sqrt(nrow(dataframe))  #determine optimal k
-      ##########
       
       dataframe_k<- dataframe_knn[,c("Imputed","impacts")]
       
@@ -87,5 +79,5 @@ for (i in 1:nrow(dataframe_knn)){
     }
   }
 }
-#impute_missing_data<- function(dataframe,column,column2)
+
   
