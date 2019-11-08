@@ -19,34 +19,73 @@
 #'                   
 #' ggplotly(comp_plot)
 #' 
-adjust_outliers <- function(dataframe,column){
-  
+adjust_outliers_knn <- function(dataframe,column){
+    
   geombox<- dataframe %>%
     ggplot2::ggplot() +
     ggplot2::geom_boxplot(mapping = aes_string(y=column)) +
     ggtitle(paste0("Boxplot of", " ",column)) +
-    ylab(column)
-
-  stats<- ggplot_build(geombox)$data
+    ylab(column) #create geom_box plot
+  
+  stats<- ggplot_build(geombox)$data #obtain outlier values
   stats<- as.data.table(stats)
   
   Outliers<- as.data.table(stats$outliers)
   names(Outliers)[1]<- "Values"
+  Outliers<- Outliers[Values!=0,]
   
-  dataframe[dataframe == 0] <- NA
+  Outliers <- tibble::rowid_to_column(Outliers, "ID")
   
-  dataframe_1<- dataframe %>%
-    mutate(dataframe[[column]], Imputed = as.numeric(ifelse(dataframe[[column]]>=Outliers$Values, NA, dataframe[[column]]))) 
+  # 
+  #dataframe[dataframe == 0] <- NA
   
-  k<- sqrt(nrow(dataframe_1))  #determine optimal k
-
-  new_data<- data.table(kNN(dataframe_1, variable = "Imputed",k = k, numFun = weightedMean, weightDist=TRUE, trace = FALSE))#perform knn Imputation
-  new_data<- data.table(round(new_data$Imputed,digits=0))
-  names(new_data)[1]<- paste0(column,"" ,"_Imputed")
-  Final_Data<<- cbind(dataframe,new_data)
+  #dataframe <- tibble::rowid_to_column(dataframe, "ID")
   
-  write.csv(Final_Data,"Final_Data_Original_vs_Imputed.csv")
+  Outliers<- dataframe[dataframe[[column]] %in% Outliers$Values,]
   
-  Final_Data
+  Outliers<- mutate(d,Seq = c(0, diff(d$ID) > 1))
   
+  dk<- d %>% 
+    filter(Seq==1)
+  
+  dm<- d %>% 
+    filter(Seq==0)
+  
+  dataframe_knn<- dataframe %>%
+    mutate(dataframe[[column]], Imputed = as.numeric(ifelse(dataframe[[column]] %in% dk, 0, dataframe[[column]]))) %>% 
+    mutate(dataframe[[column2]], dataframe[[column2]])
+  
+  dataframe_knn<- data.table(dataframe_knn)
+  
+  dataframe_knn[Imputed == 0 & `dataframe[[column]]`!=0 , Imputed := NA]
+  
+for (i in 1:nrow(dataframe_knn)){
+    
+    
+    if(any(is.na(dataframe_knn$Imputed))){
+      
+      ##########
+      
+      dataframe_knn<- data.table(dataframe_knn)
+      
+      k<- sqrt(nrow(dataframe))  #determine optimal k
+      ##########
+      
+      dataframe_k<- dataframe_knn[,c("Imputed","impacts")]
+      
+      new_data<- data.table(kNN(dataframe_k, variable = "Imputed",k = k, numFun = weightedMean, weightDist=TRUE, trace = FALSE,impNA = TRUE))#perform knn Imputation
+      new_data<- data.table(round(new_data$Imputed,digits=0))
+      names(new_data)[1]<- paste0(column,"" ,"_Imputed")
+      new_data<- cbind(new_data,dataframe)
+      
+      Final_Data<- new_data %>% 
+        select(Date,starts_with(glue::glue({column})),starts_with(glue::glue({column2})))
+      
+      write.csv(Final_Data,"Optimal_Imputed_Data_kNN_method.csv")
+    } else   {
+      message("No outliers to impute")
+    }
+  }
 }
+#impute_missing_data<- function(dataframe,column,column2)
+  
