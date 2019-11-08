@@ -3,9 +3,9 @@
 #' This function adjusts outliers using the kNN algorithm
 #' @param dataframe Object of data table or dataframe
 #' @param column Column in question with double quotes
-#' @export adjust_outliers
+#' @export adjust_outliers_knn
 #' @examples
-#' Example <- adjust_outliers_knn()
+#' Example <- adjust_outliers_knn(dataframe,"AllVisits,"impacts")
 #' 
 #' The original and imputed series can be compared with the below
 #' 

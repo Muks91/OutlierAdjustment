@@ -4,7 +4,7 @@
 #' @param dataframe Object of data table or dataframe
 #' @param column Dependent variable column in question with double quotes
 #' @param column2 Independent variable column in question with double quotes
-#' @export adjust_outliers
+#' @export impute_missing
 #' @examples
 #' Example <- impute_missing(dataframe,"AllVisits","impacts")
 #' 
