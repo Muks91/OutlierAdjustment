@@ -27,7 +27,11 @@ impute_missing <- function(dataframe,column,column2){
   
   Outliers <- tibble::rowid_to_column(Outliers, "ID")
   
-  dm<- d %>% 
+  d<- dataframe[dataframe[[column]] %in% Outliers$Values,]
+  
+  Outliers<- mutate(d,Seq = c(0, diff(d$ID) > 1))
+  
+  dm<- Outliers %>% 
     filter(Seq==0)
   
   dataframe_mice<- dataframe %>%
@@ -42,9 +46,10 @@ impute_missing <- function(dataframe,column,column2){
   dataframe_mice<- dataframe_mice %>% 
     mutate(grp, Duplicate = as.character(ifelse(duplicated(grp) | duplicated(grp, fromLast=TRUE),"D","ND")))
   
-  for (i in 1:nrow(dataframe_mice)){
+  
+  mice_fun <- function(mice_imp) { 
     
-    if(any(dataframe_mice$Duplicate=="D")){
+    mice_imp<- if(any(dataframe_mice$Duplicate=="D")){
       
       dataframe1<- dataframe_mice %>% 
         mutate(Date = as.Date(Date, format = '%d/%m/%Y')) %>% 
@@ -52,8 +57,10 @@ impute_missing <- function(dataframe,column,column2){
         reshape2::dcast(Date + dataframe[[column]] + dataframe[[column2]] + grp + Imputed ~ weekday, fun.aggregate = length, value.var = "weekday")
       
       dataframe1$Imputed[duplicated(dataframe1$grp) | duplicated(dataframe1$grp, fromLast = TRUE)] <- NA
-      d
-      dataframe1 <- dataframe1 %>% 
+      
+      dataframe1<- tbl_df(dataframe1)
+      
+      dataframe1 <- dataframe1 %>%  
         dplyr::select(Date,Imputed,`dataframe[[column2]]`)
       
       mice_imp <- mice(dataframe1,m=5, maxit = 50, method = 'pmm', printFlag = FALSE)
@@ -80,7 +87,10 @@ impute_missing <- function(dataframe,column,column2){
     } else {
       message("No missing data to impute")
     }
+  };
+  
+  #apply function
+  apply(dataframe_mice, MARGIN = 2, FUN = function(x) mice_fun(x))
   }
-}
 
 
