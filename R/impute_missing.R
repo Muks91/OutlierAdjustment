@@ -54,7 +54,7 @@ impute_missing <- function(dataframe,column,column2){
       dataframe1$Imputed[duplicated(dataframe1$grp) | duplicated(dataframe1$grp, fromLast = TRUE)] <- NA
       
       dataframe1 <- dataframe1 %>% 
-        select(Date,Imputed,`dataframe[[column2]]`)
+        dplyr::select(Date,Imputed,`dataframe[[column2]]`)
       
       mice_imp <- mice(dataframe1,m=5, maxit = 50, method = 'pmm', printFlag = FALSE)
       

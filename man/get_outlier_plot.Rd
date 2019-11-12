@@ -15,5 +15,5 @@ get_outlier_plot(dataframe, column)
 This function identifies and plots outliers using geom_boxplot
 }
 \examples{
-Example <- get_outlier_plot(data,"X")
+Example <- get_outlier_plot()
 }
