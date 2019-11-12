@@ -49,7 +49,7 @@ adjust_outliers_knn <- function(dataframe,column){
   
   dataframe_knn<- data.table(dataframe_knn)
   
-  dataframe_knn[Imputed == 0 & `dataframe[[column]]`!=0 , Imputed := NA]
+  dataframe_knn[Imputed == 0 & dataframe[[column]]!=0 , Imputed := NA]
   
   knn_fun<- function(knn_adj) { 
     
