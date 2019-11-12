@@ -36,15 +36,12 @@ adjust_outliers_knn <- function(dataframe,column){
   
   Outliers <- tibble::rowid_to_column(Outliers, "ID")
   
-  Outliers<- dataframe[dataframe[[column]] %in% Outliers$Values,]
+  d<- dataframe[dataframe[[column]] %in% Outliers$Values,]
   
   Outliers<- mutate(d,Seq = c(0, diff(d$ID) > 1))
   
-  dk<- d %>% 
+  dk<- Outliers %>% 
     filter(Seq==1)
-  
-  dm<- d %>% 
-    filter(Seq==0)
   
   dataframe_knn<- dataframe %>%
     mutate(dataframe[[column]], Imputed = as.numeric(ifelse(dataframe[[column]] %in% dk, 0, dataframe[[column]]))) %>% 
@@ -54,10 +51,9 @@ adjust_outliers_knn <- function(dataframe,column){
   
   dataframe_knn[Imputed == 0 & `dataframe[[column]]`!=0 , Imputed := NA]
   
-for (i in 1:nrow(dataframe_knn)){
+  knn_fun<- function(knn_adj) { 
     
-    
-    if(any(is.na(dataframe_knn$Imputed))){
+    knn_adj<- if(any(is.na(dataframe_knn$Imputed))){
       
       dataframe_knn<- data.table(dataframe_knn)
       
@@ -78,6 +74,7 @@ for (i in 1:nrow(dataframe_knn)){
       message("No outliers to impute")
     }
   }
+  apply(dataframe_knn, MARGIN = 2, FUN = function(x) knn_fun(x))
 }
 
   
