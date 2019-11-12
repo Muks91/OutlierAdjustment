@@ -52,7 +52,7 @@ impute_missing <- function(dataframe,column,column2){
         reshape2::dcast(Date + dataframe[[column]] + dataframe[[column2]] + grp + Imputed ~ weekday, fun.aggregate = length, value.var = "weekday")
       
       dataframe1$Imputed[duplicated(dataframe1$grp) | duplicated(dataframe1$grp, fromLast = TRUE)] <- NA
-      
+      d
       dataframe1 <- dataframe1 %>% 
         dplyr::select(Date,Imputed,`dataframe[[column2]]`)
       
