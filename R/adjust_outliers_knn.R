@@ -5,7 +5,7 @@
 #' @param column Column in question with double quotes
 #' @export adjust_outliers_knn
 #' @examples
-#' Example <- adjust_outliers_knn(dataframe,"AllVisits,"impacts")
+#' Example <- adjust_outliers_knn(dataframe,"AllVisits","impacts")
 #' 
 #' The original and imputed series can be compared with the below
 #' 
@@ -20,7 +20,9 @@
 #' ggplotly(comp_plot)
 #' 
 adjust_outliers_knn <- function(dataframe,column){
-    
+  
+  options(scipen =999)
+  
   geombox<- dataframe %>%
     ggplot2::ggplot() +
     ggplot2::geom_boxplot(mapping = aes_string(y=column)) +
@@ -36,20 +38,36 @@ adjust_outliers_knn <- function(dataframe,column){
   
   Outliers <- tibble::rowid_to_column(Outliers, "ID")
   
+  #Add ID if not already present in dataframe
+  if("ID" %in% colnames(dataframe)){
+    cat("ID already exisits")
+  } else {
+    dataframe <- tibble::rowid_to_column(dataframe, "ID")
+  }
+  
+  #dataframe <- tibble::rowid_to_column(dataframe, "ID")
+  
   d<- dataframe[dataframe[[column]] %in% Outliers$Values,]
   
-  Outliers<- mutate(d,Seq = c(0, diff(d$ID) > 1))
+  Outliers<- mutate(d,Seq = c(0, diff(d$ID, ) > 1))
+  
+  Outliers<- if(diff(Outliers$ID)>1){
+    Outliers %>% 
+      mutate(d,Seq = c(1))
+  } else {
+    print("No sequential outliers")
+  }
   
   dk<- Outliers %>% 
     filter(Seq==1)
   
   dataframe_knn<- dataframe %>%
-    mutate(dataframe[[column]], Imputed = as.numeric(ifelse(dataframe[[column]] %in% dk, 0, dataframe[[column]]))) %>% 
+    mutate(dataframe[[column]], Imputed = as.numeric(ifelse(dataframe[[column]] %in% dk[[column]], 0, dataframe[[column]]))) %>% 
     mutate(dataframe[[column2]], dataframe[[column2]])
   
   dataframe_knn<- data.table(dataframe_knn)
   
-  dataframe_knn[Imputed == 0 & dataframe[[column]]!=0 , Imputed := NA]
+  dataframe_knn[Imputed == 0 & dataframe[[column]] !=0 , Imputed := NA]
   
   knn_fun<- function(knn_adj) { 
     
@@ -76,5 +94,4 @@ adjust_outliers_knn <- function(dataframe,column){
   }
   apply(dataframe_knn, MARGIN = 2, FUN = function(x) knn_fun(x))
 }
-
   
