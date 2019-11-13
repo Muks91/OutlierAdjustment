@@ -34,6 +34,9 @@ adjust_outliers_knn <- function(dataframe,column){
   
   Outliers<- as.data.table(stats$outliers)
   names(Outliers)[1]<- "Values"
+  
+  stopifnot(dim(Outliers)[1] != 0)
+  
   Outliers<- Outliers[Values!=0,]
   
   Outliers <- tibble::rowid_to_column(Outliers, "ID")
@@ -49,7 +52,7 @@ adjust_outliers_knn <- function(dataframe,column){
   
   d<- dataframe[dataframe[[column]] %in% Outliers$Values,]
   
-  Outliers<- mutate(d,Seq = c(0, diff(d$ID, ) > 1))
+  Outliers<- mutate(d,Seq = c(0, diff(d$ID) > 1))
   
   Outliers<- if(diff(Outliers$ID)>1){
     Outliers %>% 
