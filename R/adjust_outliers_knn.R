@@ -54,7 +54,7 @@ adjust_outliers_knn <- function(dataframe,column){
   
   Outliers<- mutate(d,Seq = c(0, diff(d$ID) > 1))
   
-  Outliers<- if(any(diff(Outliers$ID))>1){
+  Outliers<- if(any(diff(Outliers$ID)>1)){
     Outliers %>% 
       mutate(d,Seq = c(1))
   } else {
