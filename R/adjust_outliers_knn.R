@@ -90,7 +90,7 @@ adjust_outliers_knn <- function(dataframe,column){
       Final_Data<- new_data %>% 
         select(Date,starts_with(glue::glue({column})),starts_with(glue::glue({column2})))
       
-      write.csv(Final_Data,"Optimal_Imputed_Data_kNN_method.csv")
+      write.csv(Final_Data,"Optimal_Imputed_Data_kNN_method_vs_Original_Data.csv")
     } else   {
       message("No outliers to impute")
     }
