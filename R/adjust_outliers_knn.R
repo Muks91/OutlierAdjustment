@@ -58,7 +58,7 @@ adjust_outliers_knn <- function(dataframe,column){
     Outliers %>% 
       mutate(d,Seq = c(1))
   } else {
-    print("No sequential outliers")
+    Outliers
   }
   
   dk<- Outliers %>% 
