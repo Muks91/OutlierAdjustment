@@ -17,7 +17,7 @@ impute_missing_or_sequential(dataframe, column, column2)
 This function imputes missing values using MICE
 }
 \examples{
-Example <- impute_missing(dataframe,"AllVisits","impacts")
+Example <- impute_missing_or_sequential(dataframe,"AllVisits","impacts")
 
 All imputed series as well as the optimal are saved in your working directory
 
