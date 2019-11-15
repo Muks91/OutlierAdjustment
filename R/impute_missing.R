@@ -10,7 +10,7 @@
 #' 
 #' All imputed series as well as the optimal are saved in your working directory
 #' 
-impute_missing <- function(dataframe,column,column2){
+impute_missing_or_sequential <- function(dataframe,column,column2){
   
   geombox<- dataframe %>%
     ggplot2::ggplot() +
