@@ -80,7 +80,7 @@ impute_missing_or_sequential <- function(dataframe,column,column2){
       
       write.csv(comb1,"All_Imputed_Data_MICE.csv")
       
-      imp_prime<- mice::complete(mice_imp,chosen)
+      imp_prime<<- data.table(cbind(mice::complete(mice_imp,chosen),dataframe[[column]]))
       
       write.csv(imp_prime,"Optimal_Imputed_Data_MICE_method.csv")
       
