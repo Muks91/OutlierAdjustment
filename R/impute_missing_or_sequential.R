@@ -1,10 +1,10 @@
-#' Imputes missing values 
+#' Imputes missing data or sequential outliers 
 #'
 #' This function imputes missing values using MICE
 #' @param dataframe Object of data table or dataframe
 #' @param column Dependent variable column in question with double quotes
 #' @param column2 Independent variable column in question with double quotes
-#' @export impute_missing
+#' @export impute_missing_or_sequential
 #' @examples
 #' Example <- impute_missing_or_sequential(dataframe,"AllVisits","impacts")
 #' 

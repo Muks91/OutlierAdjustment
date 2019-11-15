@@ -2,4 +2,4 @@
 
 export(adjust_outliers_knn)
 export(get_outlier_plot)
-export(impute_missing)
+export(impute_missing_or_sequential)
